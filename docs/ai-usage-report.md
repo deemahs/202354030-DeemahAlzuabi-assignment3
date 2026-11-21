@@ -93,7 +93,7 @@ AI-generated suggestions were reviewed and adjusted to fit the existing portfoli
 | ID | Tool (Model) | Date | Purpose | Files Affected | Changes and Verification |
 |---|---|---|---|---|---|
 | C01 | ChatGPT (GPT-6) | 2026-11-21 | Understanding requirements, implementing project filtering and sorting, GitHub API integration, skill-level filtering, back-to-top functionality, code review, and documentation | `index.html`, `js/script.js`, `css/style.css`, `README.md`, `docs/technical-documentation.md`, `docs/ai-usage-report.md` | Adapted the suggested code to the existing portfolio, updated project information, and reviewed the implementation. |
-| C02 | Claude ([Specify model]) | 2026-11-21 | Debugging, checking code conflicts, identifying errors, and reviewing corrections | `index.html`, `js/script.js` | Identified three issues involving skill-level values, the Fayidh badge, and contact form variable names. Reviewed the corrected code for consistency. |
+| C02,A01 | Claude ([Specify model]) | 2026-11-21 | Debugging, checking code conflicts, identifying errors, and reviewing corrections | `index.html`, `js/script.js` | Identified three issues involving skill-level values, the Fayidh badge, and contact form variable names. Reviewed the corrected code for consistency. |
 
 
 
