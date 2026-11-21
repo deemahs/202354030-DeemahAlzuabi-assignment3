@@ -1199,3 +1199,43 @@ body.dark-mode .github-card a {
 [hidden] {
     display: none !important;
 }
+
+
+/* ========================================
+  Level Filtering
+======================================== */
+
+.level-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.level-selector label {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+#levelSelect {
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #fff;
+  color: #333;
+  font: inherit;
+  cursor: pointer;
+}
+
+#levelSelect:focus-visible {
+  outline: 2px solid #b63d70;
+  outline-offset: 2px;
+}
+
+body.dark-mode #levelSelect {
+  background: #252530;
+  color: #fff;
+  border-color: #555;
+}

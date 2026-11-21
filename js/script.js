@@ -15,6 +15,7 @@ const filterState = document.getElementById("filterStatus");
 const projectSort = document.getElementById("projectSort");
 const projectsGrid = document.getElementById("projectsGrid");
 const originalProjects = Array.from(projectCards);
+const levelSelect = document.getElementById("levelSelect");
 
 // ========================================
 // Dark / Light Mode
@@ -88,11 +89,15 @@ function updateProjects() {
     projectsGrid.appendChild(card);
 
     const technologies = card.dataset.technologies.split(" ");
-    const matches =
+    const matchesTechnology =
       selectedFilter === "all" || technologies.includes(selectedFilter);
 
-    card.hidden = !matches;
+    const selectedLevel = levelSelect.value;
+    const matchesLevel =
+      selectedLevel === "all" || card.dataset.level === selectedLevel;
 
+    const matches = matchesTechnology && matchesLevel;
+    card.hidden = !matches;
     if (matches) {
       visibleCount++;
     }
@@ -134,6 +139,7 @@ filterButtons.forEach(function (button) {
 });
 
 projectSort.addEventListener("change", updateProjects);
+levelSelect.addEventListener("change", updateProjects);
 updateProjects();
 
 // ========================================

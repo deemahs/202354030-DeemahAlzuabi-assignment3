@@ -153,6 +153,17 @@
             </p>
           </div>
 
+          <!--  Filter Projects by  Level -->
+          <div class="level-selector">
+            <label for="levelSelect">Show projects for:</label>
+            <select id="levelSelect">
+              <option value="all">All Levels</option>
+              <option value="beginner">Beginner</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="advanced">Advanced</option>
+            </select>
+          </div>
+
           <!-- Project filtering buttons -->
 
           <div
@@ -224,19 +235,22 @@
             <article
               class="project-card"
               data-technologies="figma html css javascript"
-              data-name="A Swaping Sections Application"
+              data-name="Badelna"
+              data-level="intermediate"
             >
               <div class="project-number">01</div>
 
               <div class="project-image">
                 <img
                   src="assets/Badelna.png"
-                  alt="A Swaping Sections Application"
+                  alt="Badelna - Course Section Swapping Application"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
 
               <div class="project-info">
-                <h3>A Swaping Sections Application</h3>
+                <h3>Badelna — Course Section Swapping Application</h3>
 
                 <p>
                   A web application designed to help students swap course
@@ -255,22 +269,25 @@
             </article>
 
             <!-- Project 2 -->
-            <article class="project-card" 
-            data-technologies="python figma"
-             data-name="An AI assistant for students"
-
-             >
+            <article
+              class="project-card"
+              data-technologies="python figma"
+              data-name="Flowly"
+              data-level="Beginner"
+            >
               <div class="project-number">02</div>
 
               <div class="project-image">
                 <img
                   src="assets/Flowly.png"
-                  alt="Flowly - an AI assistant for students"
+                  alt="Flowly - AI Student Assistant"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
 
               <div class="project-info">
-                <h3>An AI assistant for students</h3>
+                <h3>Flowly — AI Student Assistant</h3>
 
                 <p>
                   An AI assistant designed to support students in their academic
@@ -292,7 +309,7 @@
               class="project-card"
               data-technologies="html css javascript"
               data-name="Fayidh"
-              data-level="intermediate"
+              data-level="Advanced"
             >
               <div class="project-number">03</div>
 
@@ -355,42 +372,34 @@
         </div>
       </section>
 
-
       <!-- ========================================
      Assignment 3 - GitHub API
 ======================================== -->
 
-<section id="github" class="section github-section">
-  <div class="container">
+      <section id="github" class="section github-section">
+        <div class="container">
+          <div class="section-heading">
+            <p class="section-label">Explore My Work</p>
+            <h2>My GitHub Repositories</h2>
+            <div class="title-line"></div>
 
-    <div class="section-heading">
-      <p class="section-label">Explore My Work</p>
-      <h2>My GitHub Repositories</h2>
-      <div class="title-line"></div>
+            <p class="section-description">
+              A collection of my public repositories, fetched directly from
+              GitHub.
+            </p>
+          </div>
 
-      <p class="section-description">
-        A collection of my public repositories,
-        fetched directly from GitHub.
-      </p>
-    </div>
+          <p id="githubStatus" role="status" aria-live="polite">
+            Loading repositories...
+          </p>
 
-    <p id="githubStatus" role="status" aria-live="polite">
-      Loading repositories...
-    </p>
+          <div id="githubRepos" class="github-grid"></div>
 
-    <div id="githubRepos" class="github-grid"></div>
-
-    <button
-      id="retryGithub"
-      class="btn primary-btn"
-      type="button"
-      hidden
-    >
-      Try Again
-    </button>
-
-  </div>
-</section>
+          <button id="retryGithub" class="btn primary-btn" type="button" hidden>
+            Try Again
+          </button>
+        </div>
+      </section>
 
       <!-- =========================
              CONTACT
