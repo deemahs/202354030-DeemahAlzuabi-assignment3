@@ -26,6 +26,7 @@
           <li><a href="#home">Home</a></li>
           <li><a href="#about">About</a></li>
           <li><a href="#projects">Projects</a></li>
+          <li><a href="#github">GitHub</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
 
@@ -353,6 +354,43 @@
           </div>
         </div>
       </section>
+
+
+      <!-- ========================================
+     Assignment 3 - GitHub API
+======================================== -->
+
+<section id="github" class="section github-section">
+  <div class="container">
+
+    <div class="section-heading">
+      <p class="section-label">Explore My Work</p>
+      <h2>My GitHub Repositories</h2>
+      <div class="title-line"></div>
+
+      <p class="section-description">
+        A collection of my public repositories,
+        fetched directly from GitHub.
+      </p>
+    </div>
+
+    <p id="githubStatus" role="status" aria-live="polite">
+      Loading repositories...
+    </p>
+
+    <div id="githubRepos" class="github-grid"></div>
+
+    <button
+      id="retryGithub"
+      class="btn primary-btn"
+      type="button"
+      hidden
+    >
+      Try Again
+    </button>
+
+  </div>
+</section>
 
       <!-- =========================
              CONTACT

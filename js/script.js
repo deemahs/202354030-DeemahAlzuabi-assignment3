@@ -137,6 +137,88 @@ projectSort.addEventListener("change", updateProjects);
 updateProjects();
 
 // ========================================
+// Assignment 3 - GitHub API Integration
+// ========================================
+
+const githubUsername = "deemahs";
+
+const githubStatus = document.getElementById("githubStatus");
+const githubRepos = document.getElementById("githubRepos");
+const retryGithub = document.getElementById("retryGithub");
+
+async function loadGitHubRepos() {
+  githubStatus.textContent = "Loading repositories...";
+  githubRepos.replaceChildren();
+  retryGithub.hidden = true;
+
+  try {
+    const response = await fetch(
+      `https://api.github.com/users/${encodeURIComponent(githubUsername)}/repos?sort=updated&per_page=6`,
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch GitHub repositories");
+    }
+
+    const repos = await response.json();
+    // Show only selected repositories
+    const selectedRepos = [
+      "202354030-DeemahAlzuabi-assignment3",
+      "202354030-DeemahAlzuabi-assignment2",
+      "202354030-DeemahAlzuabi-assignment1",
+    ];
+
+    const filteredRepos = repos.filter(function (repo) {
+      return selectedRepos.includes(repo.name);
+    });
+
+    if (!Array.isArray(repos)) {
+      throw new Error("Invalid GitHub API response");
+    }
+
+    if (filteredRepos.length === 0) {
+      githubStatus.textContent = "No public repositories available.";
+      return;
+    }
+
+    filteredRepos.forEach(function (repo) {
+      const card = document.createElement("article");
+      card.className = "github-card";
+
+      const title = document.createElement("h3");
+      title.textContent = repo.name;
+
+      const description = document.createElement("p");
+      description.textContent = repo.description || "No description available.";
+
+      const language = document.createElement("p");
+      language.textContent = `Language: ${repo.language || "Not specified"}`;
+
+      const link = document.createElement("a");
+      link.href = repo.html_url;
+      link.textContent = "View Repository";
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+
+      card.append(title, description, language, link);
+      githubRepos.appendChild(card);
+    });
+
+    githubStatus.textContent = `Showing ${filteredRepos.length} selected repositories.`;
+  } catch (error) {
+    console.error("GitHub API Error:", error);
+
+    githubStatus.textContent = "Unable to load repositories. Please try again.";
+
+    retryGithub.hidden = false;
+  }
+}
+
+retryGithub.addEventListener("click", loadGitHubRepos);
+
+loadGitHubRepos();
+
+// ========================================
 // Contact Form
 // ========================================
 
