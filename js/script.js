@@ -301,3 +301,22 @@ contactForm.addEventListener("submit", function (event) {
 // ========================================
 
 year.textContent = new Date().getFullYear();
+
+// ========================================
+// Back to Top Button
+// ========================================
+
+const backToTop = document.getElementById("backToTop");
+
+window.addEventListener("scroll", function () {
+  backToTop.hidden = window.scrollY < 300;
+});
+
+backToTop.addEventListener("click", function () {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+});
+
+backToTop.hidden = window.scrollY < 300;
