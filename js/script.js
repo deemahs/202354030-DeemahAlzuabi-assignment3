@@ -1,22 +1,20 @@
 // ========================================
 // Select Elements
 // ========================================
-
 const themeButton = document.getElementById("themeButton");
-
 const contactForm = document.getElementById("contactForm");
-
 const formMessage = document.getElementById("formMessage");
-
 const year = document.getElementById("year");
 
 // Select project filtering elements
-
 const filterButtons = document.querySelectorAll(".filter-btn");
-
 const projectCards = document.querySelectorAll(".project-card");
-
 const filterState = document.getElementById("filterStatus");
+
+// Project sorting elements
+const projectSort = document.getElementById("projectSort");
+const projectsGrid = document.getElementById("projectsGrid");
+const originalProjects = Array.from(projectCards);
 
 // ========================================
 // Dark / Light Mode
@@ -61,52 +59,82 @@ themeButton.addEventListener("click", function () {
   }
 });
 
-// Dynamic Project Filtering
+// ========================================
+// Dynamic Project Filtering and Sorting
+// ========================================
 
-// here I filtered projects based on selected technology which i have added in the HTML file
+let selectedFilter = "all";
+// Update project visibility and order
+function updateProjects() {
+  const sortType = projectSort.value;
+
+  // Start with the original project order
+  const sortedProjects = [...originalProjects];
+
+  // Sort projects alphabetically
+  if (sortType === "az") {
+    sortedProjects.sort(function (a, b) {
+      return a.dataset.name.localeCompare(b.dataset.name);
+    });
+  } else if (sortType === "za") {
+    sortedProjects.sort(function (a, b) {
+      return b.dataset.name.localeCompare(a.dataset.name);
+    });
+  }
+
+  let visibleCount = 0;
+
+  sortedProjects.forEach(function (card) {
+    projectsGrid.appendChild(card);
+
+    const technologies = card.dataset.technologies.split(" ");
+    const matches =
+      selectedFilter === "all" || technologies.includes(selectedFilter);
+
+    card.hidden = !matches;
+
+    if (matches) {
+      visibleCount++;
+    }
+  });
+
+  if (visibleCount === 0) {
+    filterState.textContent =
+      "No projects found for this filter. Try another technology.";
+  } else {
+    const projectWord = visibleCount === 1 ? "project" : "projects";
+
+    if (selectedFilter === "all") {
+      filterState.textContent = `Showing ${visibleCount} ${projectWord}.`;
+    } else {
+      const selectedButton = document.querySelector(
+        `.filter-btn[data-filter="${selectedFilter}"]`,
+      );
+
+      filterState.textContent =
+        `Showing ${visibleCount} ${projectWord} using ` +
+        `${selectedButton.textContent.trim()}.`;
+    }
+  }
+}
 
 filterButtons.forEach(function (button) {
   button.addEventListener("click", function () {
-    const filter = button.dataset.filter;
-
-    let visibleCount = 0;
+    selectedFilter = button.dataset.filter;
 
     filterButtons.forEach(function (item) {
       const selected = item === button;
 
       item.classList.toggle("active", selected);
-
       item.setAttribute("aria-pressed", String(selected));
     });
 
-    projectCards.forEach(function (card) {
-      const technologies = card.dataset.technologies.split(" ");
-
-      const matches = filter === "all" || technologies.includes(filter);
-
-      card.hidden = !matches;
-
-      if (matches) {
-        visibleCount++;
-      }
-    });
-
-    if (visibleCount === 0) {
-      filterState.textContent =
-        "No projects found for this filter. " + "Try another technology.";
-    } else {
-      const projectWord = visibleCount === 1 ? "project" : "projects";
-
-      if (filter === "all") {
-        filterState.textContent = `Showing ${visibleCount} ${projectWord}.`;
-      } else {
-        filterState.textContent =
-          `Showing ${visibleCount} ${projectWord} ` +
-          `using ${button.textContent.trim()}.`;
-      }
-    }
+    updateProjects();
   });
 });
+
+projectSort.addEventListener("change", updateProjects);
+updateProjects();
 
 // ========================================
 // Contact Form

@@ -1091,5 +1091,52 @@ ACCESSIBILITY
     .filter-btn {
         transition: none;
     }
+}
 
+
+/* ========================================
+   Project Sorting
+ ======================================== */
+
+.project-sort {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.project-sort label {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#projectSort {
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #fff;
+    color: #333;
+    font: inherit;
+    cursor: pointer;
+}
+
+#projectSort:focus-visible {
+    outline: 2px solid #b63d70;
+    outline-offset: 2px;
+}
+
+/* Dark Mode */
+body.dark-mode #projectSort {
+    background: #252530;
+    color: #fff;
+    border-color: #555;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .project-sort {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
 }
