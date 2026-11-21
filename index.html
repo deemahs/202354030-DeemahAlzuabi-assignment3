@@ -204,13 +204,26 @@
             role="status"
             aria-live="polite"
           >
-            Showing all 2 projects.
+            Showing all projects.
           </p>
-          <div class="projects-grid">
+
+          <!--  Project Sorting -->
+          <div class="project-sort">
+            <label for="projectSort">Sort by:</label>
+
+            <select id="projectSort">
+              <option value="default">Default Order</option>
+              <option value="az">Name: A to Z</option>
+              <option value="za">Name: Z to A</option>
+            </select>
+          </div>
+
+          <div class="projects-grid" id="projectsGrid">
             <!-- Project 1 -->
             <article
               class="project-card"
               data-technologies="figma html css javascript"
+              data-name="A Swaping Sections Application"
             >
               <div class="project-number">01</div>
 
@@ -241,7 +254,11 @@
             </article>
 
             <!-- Project 2 -->
-            <article class="project-card" data-technologies="python figma">
+            <article class="project-card" 
+            data-technologies="python figma"
+             data-name="An AI assistant for students"
+
+             >
               <div class="project-number">02</div>
 
               <div class="project-image">
@@ -266,6 +283,71 @@
                   <span>Python</span>
                   <span>Figma</span>
                 </div>
+              </div>
+            </article>
+
+            <!-- Project 3 -->
+            <article
+              class="project-card"
+              data-technologies="html css javascript"
+              data-name="Fayidh"
+              data-level="intermediate"
+            >
+              <div class="project-number">03</div>
+
+              <div class="project-info">
+                <h3>Fayidh — Surplus Resource Sharing Platform</h3>
+
+                <p class="project-date">SWE 363 Project</p>
+
+                <p>
+                  Fayidh is a web-based platform developed for SWE 363. It
+                  enables organizations to list surplus materials and resources,
+                  making them accessible to students and businesses for
+                  commercial or non-profit purposes. The project promotes
+                  resource reuse, sustainability, and efficient distribution of
+                  surplus materials.
+                </p>
+
+                <div class="project-skills">
+                  <span>Software Engineering</span>
+                  <span>Web Development</span>
+                  <span>JavaScript</span>
+                </div>
+
+                <span class="project-level-badge intermediate">
+                  Intermediate
+                </span>
+              </div>
+            </article>
+
+            <!-- Project 4 -->
+            <article
+              class="project-card"
+              data-technologies="python"
+              data-name="Student Social Media Analysis"
+              data-level="beginner"
+            >
+              <div class="project-number">04</div>
+
+              <div class="project-info">
+                <h3>Student Social Media Analysis</h3>
+
+                <p class="project-date">Python Data Analysis Project</p>
+
+                <p>
+                  A beginner-level data analysis project exploring students'
+                  social media usage patterns using Python. The project focuses
+                  on organizing and analyzing data to identify trends and
+                  understand how students interact with social media platforms.
+                </p>
+
+                <div class="project-skills">
+                  <span>Python</span>
+                  <span>Data Analysis</span>
+                  <span>Beginner</span>
+                </div>
+                <span class="project-level-badge beginner"> Beginner </span>
               </div>
             </article>
           </div>
