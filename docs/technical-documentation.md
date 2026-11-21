@@ -1,254 +1,234 @@
-# Technical Documentation
+# Technical Documentation — Assignment 3
+
+**Student Name:** Deemah Alzuabi  
+**Student ID:** 202354030  
+**Project:** Personal Portfolio Website
 
 ## 1. Project Overview
 
-This project is an interactive and responsive personal portfolio website developed using HTML, CSS, and JavaScript.
-It builds on Assignment 1 by adding dynamic project filtering, theme preference storage, and improved contact form validation.
-The website uses a single-page structure where users can scroll or use navigation links to move between different sections.
+Assignment 3 extends the personal portfolio website developed in Assignments 1 and 2 by introducing advanced JavaScript functionality, external API integration, state management, and performance improvements.
 
-The main sections are:
+The application is a client-side website built using HTML, CSS, and JavaScript.
 
-* Home
-* About Me
-* Projects
-* Contact
+## 2. Application Architecture
 
-## 2. HTML Structure
+The website uses three main technologies:
 
-HTML5 is used to define the structure and content of the website.
+- **HTML5:** Defines the structure and content of the website.
+- **CSS3:** Controls styling, layout, responsiveness, and dark mode.
+- **JavaScript:** Handles user interactions, API requests, project filtering and sorting, form validation, and state management.
 
-The website uses semantic HTML elements such as:
+The project does not require a backend server or database.
 
-* `header`
-* `nav`
-* `main`
-* `section`
-* `article`
-* `form`
-* `footer`
+### Project Structure
 
-Using separate sections makes the content easier to organize and navigate.
+```text
+202354030-DeemahAlzuabi-assignment3/
+├── index.html
+├── css/
+│   └── style.css
+├── js/
+│   └── script.js
+├── assets/
+│   ├── Badelna.png
+│   └── Flowly.png
+├── docs/
+│   ├── ai-usage-report.md
+│   └── technical-documentation.md
+├── README.md
+└── .gitignore
+```
 
-## 3. Home Section
+## 3. Project Filtering and Sorting
 
-The Home section is the landing area of the website.
+The Projects section allows visitors to filter projects by technology and skill level and sort them alphabetically.
 
-It introduces me as Deemah Alzuabi, a Computer Science student.
+Each project card contains custom HTML data attributes, such as:
 
-It also includes buttons that allow visitors to navigate directly to the About Me and Projects sections.
+```html
+data-technologies="html css javascript"
+data-name="Fayidh"
+data-level="advanced"
+```
 
-## 4. About Me Section
+JavaScript reads these attributes to determine which projects should be displayed and how they should be sorted.
 
-The About Me section provides information about my academic background, interests, and technical skills.
+### 3.1 Technology Filtering
 
-The layout uses CSS Grid to organize the profile area and written information.
+Visitors can filter projects using the following options:
 
-The skills are displayed as individual visual elements.
+- All
+- JavaScript
+- Python
+- Figma
 
-## 5. Projects Section
+The selected technology is compared with each project's `data-technologies` attribute.
 
-The Projects section contains project cards.
+When "All" is selected, all projects pass the technology filter.
 
-Each project includes:
+### 3.2 Skill-Level Filtering
 
-* Project title
-* Short description
-* Project image
-* Relevant technologies or skills
+Visitors can filter projects by:
 
-CSS Grid is used to display the projects in multiple columns on larger screens.
+- All Levels
+- Beginner
+- Intermediate
+- Advanced
 
-On smaller screens, the project cards change to a single-column layout.
+JavaScript compares the selected level with the project's `data-level` attribute using strict equality (`===`).
 
+All level values are stored in lowercase to match the dropdown options.
 
-## Dynamic Project Filtering
+A project is displayed only when it matches both the selected technology and skill level.
 
-JavaScript is used to filter projects based on the technology selected by the user.
-The filter buttons include All, JavaScript, Python, and Figma.
+### 3.3 Project Sorting
 
-Each project card contains a data-technologies attribute that identifies the technologies used in that project.
+The sorting dropdown supports:
 
-When a user clicks a filter button, JavaScript checks the technologies associated with each project.
+- Default Order
+- Name A–Z
+- Name Z–A
 
-Matching projects are displayed, while non-matching projects are hidden using the hidden property.
+JavaScript uses `Array.sort()` and `localeCompare()` to sort project cards alphabetically.
 
-The selected filter button is also highlighted using an active CSS class.
+The original project order is preserved using the `originalProjects` array.
 
-A feedback message displays the number of matching projects.
+### 3.4 Combined Logic
 
-If no projects match the selected filter, a message informs the user that no projects were found.
+The `updateProjects()` function handles technology filtering, skill-level filtering, and sorting.
 
-## 6. Contact Section
+Whenever a visitor changes a filter or sorting option, the function updates the displayed projects and the status message.
 
-The Contact section contains a form with:
+## 4. GitHub API Integration
 
-* Name
-* Email
-* Message
+The portfolio integrates the GitHub REST API to fetch public repository information dynamically.
 
-A backend is not required for this assignment.
+### 4.1 API Endpoint
 
-JavaScript uses `preventDefault()` to prevent a real form submission and provides feedback to the user instead.
+`https://api.github.com/users/deemahs/repos?sort=updated&per_page=6`
 
+### 4.2 Selected Repositories
 
-## Form Validation
+The application filters the API response to display only the following repositories:
 
-JavaScript validates the contact form when the user clicks the Send Message button.
+- `202354030-DeemahAlzuabi-assignment3`
+- `202354030-DeemahAlzuabi-assignment2`
+- `202354030-DeemahAlzuabi-assignment1`
 
-The validation checks whether:
+### 4.3 Request Process
 
-The name field is empty.
+1. JavaScript sends an HTTP GET request using `fetch()`.
+2. The application checks the HTTP response status using `response.ok`.
+3. The JSON response is converted into JavaScript objects using `response.json()`.
+4. The returned repositories are filtered to display only the selected repositories.
+5. Repository cards are created dynamically using `document.createElement()`.
+6. Each card displays the repository name, description, programming language, and a link to the repository.
 
-The email field is empty.
+### 4.4 Error Handling
 
-The email address has a valid basic format.
+The API integration uses `async/await` and `try...catch` to handle requests and errors.
 
-The message field is empty.
+If an API request fails, the website displays a user-friendly error message and a retry button.
 
-If any input is invalid, an error message is displayed and the invalid field receives focus.
+If none of the selected public repositories are found, the website displays the message:
 
-The aria-invalid attribute is used to identify invalid fields.
+"No public repositories available."
 
-If all inputs are valid, a confirmation message is displayed and the form fields are cleared.
+### 4.5 API Limitations
 
-The confirmation message explains that the portfolio is a demonstration and does not send actual messages.
+The API only provides information about public repositories.
 
-## 7. CSS and Visual Design
+An internet connection is required, and GitHub API rate limits may affect availability.
 
-CSS is used to control the visual appearance and layout of the portfolio.
+When the API request uses `per_page=6`, only six repositories are returned. Selected repositories outside those six results will not be displayed.
 
-The main color palette consists of:
+## 5. State Management
 
-* Pink
-* Black
-* White
+The website uses browser `localStorage` to remember the visitor's preferred theme.
 
-Pink is used as the main accent color, while black and white provide contrast.
+When the visitor switches between dark and light mode, JavaScript updates the `dark-mode` class and saves the preference using the key `portfolioTheme`.
 
-The website also uses:
+When the website is reopened, the saved preference is retrieved and applied.
 
-* Borders
-* Spacing
-* Hover effects
-* Transitions
-* Responsive typography
-* Cards
-* Buttons
+Storage operations are wrapped in `try...catch` blocks to handle cases where `localStorage` is unavailable.
 
-Assignment 2 also includes styling for project filter buttons, active filter states, form feedback messages, and project animations.
+## 6. Contact Form Validation
 
-CSS transitions are used to make interactions smoother.
+The contact form contains three required fields:
 
-## 8. Responsive Design
+- Name
+- Email
+- Message
 
-The website was designed to work on desktop, tablet, and mobile screen sizes.
+JavaScript checks that all required fields are completed and that the email address has a valid format.
 
-CSS Grid and Flexbox are used to create flexible layouts.
+Email validation uses the browser's `validity.valid` property and a regular expression.
 
-Media queries are used to modify the layout when the screen width becomes smaller.
+JavaScript prevents the default form submission using `event.preventDefault()`.
 
-For example, project cards are displayed next to each other on larger screens and vertically on smaller screens.
+If validation fails, the invalid field receives the `aria-invalid="true"` attribute, an error message is displayed, and the field receives focus.
 
-The About Me section also changes from a multi-column layout to a single-column layout on smaller devices.
+If all inputs are valid, the website displays a confirmation message and resets the form.
 
-The website was tested using browser resizing and browser Developer Tools.
+The contact form is a demonstration and does not send messages to a backend service.
 
-## 9. JavaScript Functionality
+## 7. Back-to-Top Functionality
 
-### Dark/Light Mode
+The back-to-top button responds to the visitor's scroll position.
 
-JavaScript listens for a click on the theme button.
+When the visitor scrolls more than 300 pixels down the page, the button becomes visible.
 
-When the button is clicked, JavaScript adds or removes a `dark-mode` class.
+Clicking the button uses `window.scrollTo()` with smooth scrolling to return to the top of the page.
 
-CSS uses this class to change the colors of the website.
+The button's visibility is controlled using the `hidden` property.
 
+## 8. Performance Optimization
 
-### Theme Preference Using localStorage
+The website includes the following performance-related improvements:
 
-The selected theme is saved using the browser's localStorage.
+- Lazy loading for project images using `loading="lazy"`.
+- Asynchronous image decoding using `decoding="async"`.
+- Responsive CSS layouts using Grid and Flexbox.
+- Reuse of the `updateProjects()` function for filtering and sorting.
+- CSS media queries for tablet and mobile layouts.
+- A `prefers-reduced-motion` media query to reduce animations for visitors who prefer reduced motion.
 
-When the page loads, JavaScript checks whether a previously selected theme is stored.
+## 9. Accessibility
 
-If a saved theme exists, it is applied automatically.
+The portfolio includes the following accessibility-related features:
 
-This allows the website to remember the user's theme preference after refreshing the page.
+- Descriptive alternative text for project images.
+- Labels for form fields and dropdown menus.
+- `aria-label` attributes for interactive elements.
+- `aria-pressed` attributes for filter buttons and the theme toggle.
+- `aria-live` and `role="status"` for status messages.
+- `aria-invalid` for invalid form fields.
+- Keyboard-accessible buttons and visible focus indicators.
+- Reduced-motion support through CSS.
 
-A try/catch statement is used to handle possible localStorage errors without stopping the theme switching functionality.
+## 10. Testing and Verification
 
-## Project Filtering
+The following table summarizes the functional tests reported for the project.
 
-JavaScript uses event listeners to detect when users click the filter buttons.
+| Test | Expected Result | Reported Result |
+|---|---|---|
+| Technology filtering | Matching projects appear | Passed |
+| Alphabetical sorting | Projects appear in the selected order | Passed |
+| Skill-level filtering | Projects match the selected level | Passed |
+| Combined filtering and sorting | Filters and sorting work together | Passed |
+| GitHub API | Selected repositories load successfully | Passed |
+| API error handling | An error message and retry button appear | Passed |
+| Theme persistence | The selected theme remains after reloading | Passed |
+| Contact form validation | Invalid inputs are rejected | Passed |
+| Back-to-top button | The page scrolls to the top when clicked | Passed |
+| Mobile responsiveness | The layout adjusts to smaller screens | Passed |
 
-The selected technology is compared with the technologies stored in each project card.
 
-The displayed projects and feedback message are updated dynamically.
+## 11. Known Limitations
 
-### Contact Form Interaction
-
-JavaScript listens for the contact form submission.
-
-The default form submission is prevented because the assignment does not require a backend.
-
-Input validation is performed before displaying a confirmation message.
-
-Error messages are shown when the input is invalid.
-
-### Automatic Current Year
-
-JavaScript uses the `Date` object to retrieve the current year and display it automatically in the footer.
-
-## 10. Error Handling and User Feedback
-The website provides feedback to users during interactions.
-The contact form displays error messages when required fields are empty or the email format is invalid.
-The form displays a confirmation message after successful validation.
-The project filtering feature updates a message showing the number of matching projects.
-The filtering logic also includes a message for cases where no projects match the selected technology.
-The theme switching feature handles localStorage errors using try/catch.
-
-## 11. Testing
-
-The following features should be tested before submission:
-
-* Navigation links
-* About Me button
-* Projects button
-* Smooth scrolling
-* Dark/light mode
-* Theme preference after refreshing the page
-* Project filtering buttons
-* Project filtering feedback
-* Contact form with empty inputs
-* Contact form with an invalid email
-* Contact form with valid inputs
-* Responsive layout on desktop, tablet, and mobile devices
-* Testing results should be recorded after completing the checks.
-
-## 12. Performance
-
-The website is lightweight because it uses standard HTML, CSS, and JavaScript without large external frameworks.
-
-The project separates HTML, CSS, and JavaScript into different files to keep the code organized and maintainable.
-
-## 13. Browser Compatibility
-
-The website uses standard web technologies and is intended to work on modern browsers such as:
-
-* Google Chrome
-* Microsoft Edge
-* Mozilla Firefox
-* Safari
-
-Browser compatibility should be verified during final testing.
-
-## 14. Future Improvements
-
-Possible future improvements include:
-* Adding additional projects
-* Adding a real profile image
-* Adding GitHub and LinkedIn links
-* Adding a downloadable CV
-* Connecting the contact form to a backend
-* Adding more project filtering categories
-
-
+- The contact form does not send actual messages.
+- GitHub API requests require an internet connection.
+- Only public GitHub repositories can be displayed.
+- GitHub API rate limits may affect availability.
+- Repository selection is limited to the results returned by the configured API request.
+- The application does not use a backend server or database.

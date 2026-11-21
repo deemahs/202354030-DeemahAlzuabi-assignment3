@@ -1,19 +1,23 @@
 // ========================================
 // Select Elements
 // ========================================
+
+// Theme toggle button and form-related elements
 const themeButton = document.getElementById("themeButton");
 const contactForm = document.getElementById("contactForm");
 const formMessage = document.getElementById("formMessage");
 const year = document.getElementById("year");
 
-// Select project filtering elements
+// Project filtering elements
 const filterButtons = document.querySelectorAll(".filter-btn");
 const projectCards = document.querySelectorAll(".project-card");
 const filterState = document.getElementById("filterStatus");
 
-// Project sorting elements
+// Project sorting and level filtering elements
 const projectSort = document.getElementById("projectSort");
 const projectsGrid = document.getElementById("projectsGrid");
+
+// Store the original card order so "Default" sort can restore it
 const originalProjects = Array.from(projectCards);
 const levelSelect = document.getElementById("levelSelect");
 
@@ -21,13 +25,18 @@ const levelSelect = document.getElementById("levelSelect");
 // Dark / Light Mode
 // ========================================
 
-// Apply theme and update accessibility
-
+/**
+ * Apply the given theme to the page and update the toggle button.
+ * @param {boolean} isDark - Whether dark mode should be active.
+ */
 function applyTheme(isDark) {
+  // Toggle the dark-mode class on the body element
   document.body.classList.toggle("dark-mode", isDark);
 
+  // Switch the button emoji to reflect the current theme
   themeButton.textContent = isDark ? "☀️" : "🌙";
 
+  // Update ARIA attributes so screen readers announce the current state
   themeButton.setAttribute(
     "aria-label",
     isDark ? "Switch to light mode" : "Switch to dark mode",
@@ -36,8 +45,8 @@ function applyTheme(isDark) {
   themeButton.setAttribute("aria-pressed", String(isDark));
 }
 
-// Restore saved theme from localStorage
-
+// Restore the saved theme from localStorage on page load.
+// Wrapped in try/catch in case localStorage is unavailable (e.g., private browsing).
 try {
   const savedTheme = localStorage.getItem("portfolioTheme");
 
@@ -47,12 +56,12 @@ try {
   console.warn("Could not load theme preference:", error);
 }
 
-// Save selected theme
-
+// Toggle theme on button click and save the preference
 themeButton.addEventListener("click", function () {
   const isDark = !document.body.classList.contains("dark-mode");
   applyTheme(isDark);
 
+  // Save the new theme to localStorage so it persists across visits
   try {
     localStorage.setItem("portfolioTheme", isDark ? "dark" : "light");
   } catch (error) {
@@ -64,15 +73,21 @@ themeButton.addEventListener("click", function () {
 // Dynamic Project Filtering and Sorting
 // ========================================
 
+// Track the currently selected technology filter (default: show all)
 let selectedFilter = "all";
-// Update project visibility and order
+
+/**
+ * Update project visibility based on the active technology filter,
+ * level filter, and sort order. This single function handles all
+ * three features together so they always stay in sync.
+ */
 function updateProjects() {
   const sortType = projectSort.value;
 
   // Start with the original project order
   const sortedProjects = [...originalProjects];
 
-  // Sort projects alphabetically
+  // Sort projects alphabetically using localeCompare
   if (sortType === "az") {
     sortedProjects.sort(function (a, b) {
       return a.dataset.name.localeCompare(b.dataset.name);
@@ -86,16 +101,21 @@ function updateProjects() {
   let visibleCount = 0;
 
   sortedProjects.forEach(function (card) {
+    // Re-append each card in the new sorted order
     projectsGrid.appendChild(card);
 
+    // Check if the card matches the selected technology filter
     const technologies = card.dataset.technologies.split(" ");
     const matchesTechnology =
       selectedFilter === "all" || technologies.includes(selectedFilter);
 
+    // Check if the card matches the selected level filter.
+    // Uses strict equality (===), so data-level values must be lowercase.
     const selectedLevel = levelSelect.value;
     const matchesLevel =
       selectedLevel === "all" || card.dataset.level === selectedLevel;
 
+    // A card is visible only if it passes both filters
     const matches = matchesTechnology && matchesLevel;
     card.hidden = !matches;
     if (matches) {
@@ -103,6 +123,7 @@ function updateProjects() {
     }
   });
 
+  // Update the status message to tell the user how many projects are shown
   if (visibleCount === 0) {
     filterState.textContent =
       "No projects found for this filter. Try another technology.";
@@ -123,10 +144,12 @@ function updateProjects() {
   }
 }
 
+// Attach click handlers to each technology filter button
 filterButtons.forEach(function (button) {
   button.addEventListener("click", function () {
     selectedFilter = button.dataset.filter;
 
+    // Update active state and ARIA attributes on all buttons
     filterButtons.forEach(function (item) {
       const selected = item === button;
 
@@ -138,26 +161,37 @@ filterButtons.forEach(function (button) {
   });
 });
 
+// Re-filter when the sort order or level selection changes
 projectSort.addEventListener("change", updateProjects);
 levelSelect.addEventListener("change", updateProjects);
+
+// Run once on page load to set the initial display
 updateProjects();
 
 // ========================================
 // Assignment 3 - GitHub API Integration
 // ========================================
 
+// GitHub username used for the API request
 const githubUsername = "deemahs";
 
+// DOM elements for the GitHub section
 const githubStatus = document.getElementById("githubStatus");
 const githubRepos = document.getElementById("githubRepos");
 const retryGithub = document.getElementById("retryGithub");
 
+/**
+ * Fetch and display selected GitHub repositories using the REST API.
+ * Shows loading state, handles errors, and provides a retry button.
+ */
 async function loadGitHubRepos() {
+  // Reset the UI before making a new request
   githubStatus.textContent = "Loading repositories...";
   githubRepos.replaceChildren();
   retryGithub.hidden = true;
 
   try {
+    // Send a GET request to the GitHub REST API
     const response = await fetch(
       `https://api.github.com/users/${encodeURIComponent(githubUsername)}/repos?sort=updated&per_page=6`,
     );
@@ -167,7 +201,8 @@ async function loadGitHubRepos() {
     }
 
     const repos = await response.json();
-    // Show only selected repositories
+
+    // Filter the response to show only specific selected repositories
     const selectedRepos = [
       "202354030-DeemahAlzuabi-assignment3",
       "202354030-DeemahAlzuabi-assignment2",
@@ -178,6 +213,7 @@ async function loadGitHubRepos() {
       return selectedRepos.includes(repo.name);
     });
 
+    // Validate that the API returned an array
     if (!Array.isArray(repos)) {
       throw new Error("Invalid GitHub API response");
     }
@@ -187,6 +223,7 @@ async function loadGitHubRepos() {
       return;
     }
 
+    // Create a card for each repository with its details and link
     filteredRepos.forEach(function (repo) {
       const card = document.createElement("article");
       card.className = "github-card";
@@ -212,6 +249,7 @@ async function loadGitHubRepos() {
 
     githubStatus.textContent = `Showing ${filteredRepos.length} selected repositories.`;
   } catch (error) {
+    // Display a user-friendly error message and show the retry button
     console.error("GitHub API Error:", error);
 
     githubStatus.textContent = "Unable to load repositories. Please try again.";
@@ -220,59 +258,65 @@ async function loadGitHubRepos() {
   }
 }
 
+// Allow the user to retry the API request if it fails
 retryGithub.addEventListener("click", loadGitHubRepos);
 
+// Fetch repositories on page load
 loadGitHubRepos();
 
 // ========================================
-// Contact Form
+// Contact Form Validation
 // ========================================
 
+// Handle contact form submission with client-side validation
 contactForm.addEventListener("submit", function (event) {
-  // Prevent the form from actually submitting
+  // Prevent the default browser form submission
   event.preventDefault();
 
-  const nameFiled = document.getElementById("name");
+  // Get references to form input fields
+  const nameField = document.getElementById("name");
 
-  const emailFiled = document.getElementById("email");
+  const emailField = document.getElementById("email");
 
-  const messageFiled = document.getElementById("message");
+  const messageField = document.getElementById("message");
 
-  // Clear previous validation errors
-  const fields = [nameFiled, emailFiled, messageFiled];
+  // Clear previous validation states from all fields
+  const fields = [nameField, emailField, messageField];
 
   fields.forEach(function (field) {
     field.removeAttribute("aria-invalid");
   });
 
-  const name = nameFiled.value.trim();
+  // Read and trim the input values
+  const name = nameField.value.trim();
 
-  const email = emailFiled.value.trim();
+  const email = emailField.value.trim();
 
-  const message = messageFiled.value.trim();
+  const message = messageField.value.trim();
 
-  // Validate user input
+  // Validate each field in order: name → email → email format → message
   let error = "";
   let invalidFields = null;
 
   if (!name) {
     error = "Please enter your name.";
-    invalidFields = nameFiled;
+    invalidFields = nameField;
   } else if (!email) {
     error = "Please enter your email.";
-    invalidFields = emailFiled;
+    invalidFields = emailField;
   } else if (
-    !emailFiled.validity.valid ||
+    !emailField.validity.valid ||
     !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
   ) {
+    // Check both the browser's built-in validation and a regex pattern
     error = "Please enter a valid email address.";
-    invalidFields = emailFiled;
+    invalidFields = emailField;
   } else if (!message) {
     error = "Please enter your message.";
-    invalidFields = messageFiled;
+    invalidFields = messageField;
   }
-  // Display error feedback
 
+  // If validation fails, mark the field as invalid and focus it
   if (error) {
     invalidFields.setAttribute("aria-invalid", "true");
 
@@ -284,7 +328,7 @@ contactForm.addEventListener("submit", function (event) {
     return;
   }
 
-  // Display confirmation after validation
+  // All fields are valid — show a success confirmation message
 
   formMessage.className = "form-message success";
 
@@ -292,7 +336,7 @@ contactForm.addEventListener("submit", function (event) {
     `Thank you, ${name}! Your form is valid. ` +
     "This portfolio demo does not send messages.";
 
-  // Clear form fields
+  // Reset the form fields after successful validation
   contactForm.reset();
 });
 
@@ -300,6 +344,7 @@ contactForm.addEventListener("submit", function (event) {
 // Current Year
 // ========================================
 
+// Set the footer copyright year to the current year automatically
 year.textContent = new Date().getFullYear();
 
 // ========================================
@@ -308,10 +353,12 @@ year.textContent = new Date().getFullYear();
 
 const backToTop = document.getElementById("backToTop");
 
+// Show the back-to-top button when the user scrolls past 300 pixels
 window.addEventListener("scroll", function () {
   backToTop.hidden = window.scrollY < 300;
 });
 
+// Scroll smoothly to the top of the page when the button is clicked
 backToTop.addEventListener("click", function () {
   window.scrollTo({
     top: 0,
@@ -319,4 +366,5 @@ backToTop.addEventListener("click", function () {
   });
 });
 
+// Set initial visibility based on the current scroll position
 backToTop.hidden = window.scrollY < 300;

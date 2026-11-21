@@ -1242,6 +1242,63 @@ body.dark-mode #levelSelect {
 
 
 /* ========================================
+ Project Level Badges
+======================================== */
+
+.project-level-badge {
+    display: inline-block;
+    padding: 6px 15px;
+    border-radius: 25px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 8px;
+    border: 1px solid;
+}
+
+/* Beginner - Green */
+.project-level-badge.beginner {
+    background-color: #e8f8ed;
+    color: #16803c;
+    border-color: #16803c;
+}
+
+/* Intermediate - Orange */
+.project-level-badge.intermediate {
+    background-color: #fff4df;
+    color: #a65b00;
+    border-color: #d48a20;
+}
+
+/* Advanced - Pink */
+.project-level-badge.advanced {
+    background-color: #ffe8f1;
+    color: #b02d68;
+    border-color: #b02d68;
+}
+
+/* Dark Mode */
+body.dark-mode .project-level-badge.beginner {
+    background-color: #173b29;
+    color: #8ce5aa;
+    border-color: #8ce5aa;
+}
+
+body.dark-mode .project-level-badge.intermediate {
+    background-color: #3d2d16;
+    color: #ffd08a;
+    border-color: #ffd08a;
+}
+
+body.dark-mode .project-level-badge.advanced {
+    background-color: #421b2d;
+    color: #ff9fc8;
+    border-color: #ff9fc8;
+}
+
+
+/* ========================================
  Back to Top Button
 ======================================== */
 

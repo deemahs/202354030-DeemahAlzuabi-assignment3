@@ -1,159 +1,140 @@
-# Deemah Alzuabi - Personal Portfolio
+# Deemah Alzuabi — Personal Portfolio
 
-## Project Description
+## Project Overview
 
-This project is an interactive and responsive personal portfolio website developed for Assignment 2: Interactive Features.
+This personal portfolio website was developed for Assignment 3 – Advanced Functionality. It builds on Assignments 1 and 2 by introducing external API integration, advanced JavaScript logic, state management, and performance improvements.
 
-The website builds on the portfolio created in Assignment 1 by adding new interactive features and improving the user experience using JavaScript.
+The portfolio showcases my academic background, technical skills, and selected projects.
 
-The portfolio introduces me as a Computer Science student, provides information about my background and technical skills, presents selected projects and experiences, and includes a contact section.
+## Featured Projects
 
-The website was developed using HTML, CSS, and JavaScript with a responsive design that supports desktop, tablet, and mobile devices.
-
-## Website Sections
-
-### Home
-
-The Home section is the first section visitors see when opening the website.
-
-It includes:
-
-* A welcome message
-* My name
-* My field of study
-* A short introduction
-* A "Know More About Me" button
-* A "My Projects" button
-
-The buttons allow users to navigate directly to different sections of the portfolio.
-
-### About Me
-
-The About Me section provides a short introduction about my academic background, interests, and technical skills.
-
-Some of the skills displayed in this section include HTML, CSS, JavaScript, React, Python, Java, Git, and Figma.
-
-### Projects
-
-The Projects section presents selected projects and experiences.
-
-Each project includes a title, short description, and relevant technologies or skills.
-
-A new project filtering feature allows users to filter projects based on technologies such as JavaScript, Python, and Figma.
-
-The displayed projects update dynamically based on the selected filter.
-
-A feedback message also shows the number of matching projects.
-
-### Contact
-
-The Contact section provides a form containing Name, Email, and Message fields.
-
-JavaScript is used to validate user input and display error messages when required fields are empty or the email format is invalid.
-
-When all fields are valid, a confirmation message is displayed.
-
-No backend is connected, so the form does not send actual messages.
+- **Badelna:** A course section swapping application designed to help students manage section swap requests.
+- **Flowly:** An AI-powered student assistant developed during a summer research experience.
+- **Fayidh:** A surplus resource sharing platform developed for SWE 363. It allows organizations to share surplus materials and resources with students and businesses for commercial or non-profit purposes.
+- **Student Social Media Analysis:** A beginner-level Python data analysis project exploring students' social media usage patterns.
 
 ## Features
 
-* Responsive single-page portfolio
-* Smooth scrolling between sections
-* About Me section
-* Skills display
-* Projects section
-* Contact form
-* Dark/light mode
-* JavaScript form interaction
-* Automatic current year
-* Responsive desktop, tablet, and mobile layouts
-* Dynamic project filtering using JavaScript
-* Theme preference saved using localStorage
-* Contact form validation
-* Error and success feedback messages
-* Project filtering feedback
-* Hover effects and smooth transitions
-* Accessibility improvements using ARIA attributes
+- Responsive portfolio design.
+- Dark and light mode with persistent theme preferences.
+- Project filtering by technology.
+- Alphabetical project sorting (A–Z and Z–A).
+- Project filtering by skill level.
+- GitHub REST API integration.
+- Display of selected public GitHub repositories.
+- API loading states, error handling, and retry functionality.
+- Contact form validation.
+- Back-to-top button with smooth scrolling.
+- Lazy loading and asynchronous decoding for project images.
+- Dynamic copyright year.
 
 ## Technologies Used
 
-* HTML
-* CSS
-* JavaScript
-* CSS Grid
-* Flexbox
-* Media Queries
-* localStorage
-* Git
-* GitHub
+- HTML5
+- CSS3
+- JavaScript
+- Git and GitHub
+- GitHub REST API
+- Browser localStorage
 
 ## Project Structure
 
 ```text
-assignment-2/
+202354030-DeemahAlzuabi-assignment3/
 ├── index.html
-├── README.md
-├── .gitignore
 ├── css/
 │   └── style.css
 ├── js/
 │   └── script.js
 ├── assets/
-│   └── Badelna.png
+│   ├── Badelna.png
 │   └── Flowly.png
-└── docs/
-    ├── ai-usage-report.md
-    └── technical-documentation.md
+├── docs/
+│   ├── ai-usage-report.md
+│   └── technical-documentation.md
+├── README.md
+└── .gitignore
 ```
 
-## How to Run the Project
+## Setup Instructions
 
-No installation or external dependencies are required.
+1. Clone or download the repository from GitHub.
+2. Open the project folder in Visual Studio Code.
+3. Open `index.html` using the Live Server extension.
+4. Make sure an internet connection is available for GitHub API requests.
+5. Explore the portfolio and its interactive features.
 
-1. Download or clone the GitHub repository.
-2. Open the project folder.
-3. Open `index.html` in a modern web browser.
+No additional package installation, backend server, database, or API key is required.
 
-The website can also be opened using the Live Server extension in Visual Studio Code.
+## API Integration
 
-## Responsive Design
+The website integrates the GitHub REST API to dynamically fetch public repository information.
 
-The portfolio was designed to work on desktop, tablet, and mobile devices.
+**API Endpoint:**
 
-CSS Grid and Flexbox are used to organize the website layout, while media queries adjust the design for different screen sizes.
+`https://api.github.com/users/deemahs/repos?sort=updated&per_page=6`
 
-On smaller screens, elements such as the About Me content and project cards change from multi-column layouts to single-column layouts to improve readability and usability.
+JavaScript uses `fetch()` and `async/await` to request repository data.
 
-The website was tested by resizing the browser and using browser Developer Tools.
+The application filters the API response to display only selected public repositories.
 
-## JavaScript
+Each repository card displays its name, description, programming language, and a link to GitHub.
 
-JavaScript is used to add interactivity to the website.
+If an API request fails, the website displays a user-friendly error message and provides a retry option.
 
-The main JavaScript features include:
+## Complex Logic
 
-* Switching between dark and light themes
-* Saving the selected theme using localStorage
-* Filtering projects based on selected technologies
-* Validating contact form inputs
-* Displaying feedback messages
-* Automatically displaying the current year in the footer
+The website uses advanced JavaScript logic to filter and sort projects.
+
+Visitors can filter projects by technology, including JavaScript, Python, and Figma.
+
+Projects can also be filtered by skill level: Beginner, Intermediate, or Advanced.
+
+The sorting dropdown allows visitors to arrange projects alphabetically in ascending or descending order.
+
+These features work together through the `updateProjects()` function, which updates project visibility, order, and status messages.
+
+## State Management
+
+The website uses browser `localStorage` to save the visitor's preferred theme.
+
+When a visitor switches between dark and light mode, JavaScript updates the website's appearance and stores the selected preference.
+
+The saved theme is restored when the website is reopened.
+
+## Contact Form Validation
+
+The contact form checks that the name, email address, and message fields are completed and that the email address has a valid format.
+
+JavaScript displays appropriate validation feedback.
+
+The form is a demonstration and does not send actual messages.
+
+## Performance Optimization
+
+The website includes:
+
+- Lazy loading for project images.
+- Asynchronous image decoding.
+- Responsive layouts using CSS Grid, Flexbox, and media queries.
+- Reusable JavaScript functions to reduce duplicated logic.
+
+Performance and compatibility can be evaluated using Lighthouse and browser testing.
 
 ## AI Usage
 
-ChatGPT was used as an AI-assisted development and learning tool during this assignment.
+ChatGPT and Claude were used to support the development and improvement of Assignment 3.
 
-I used ChatGPT to understand the assignment requirements, review JavaScript code, identify errors, and improve interactive features such as project filtering, theme preference storage, and contact form validation.
+**ChatGPT** was used to understand assignment requirements, implement new features, integrate the GitHub API, review code, and prepare documentation.
 
-I also used ChatGPT to help organize and update the project documentation like fixing grammar mistakes.
+**Claude** was used for debugging, checking possible conflicts between features, reviewing functionality, and correcting errors.
 
-I reviewed and customized the suggestions to match my existing portfolio structure and design.
+AI-generated suggestions were reviewed and adapted to the existing portfolio implementation.
 
-More information about AI usage is available in
-`docs/ai-usage-report.md`
+Detailed information about AI assistance, modifications, and verification is available in the AI Usage Report (docs/ai-usage-report.md).
+
+Complete AI conversations and original AI-generated artifacts are submitted separately through Blackboard.
 
 ## Technical Documentation
 
-Detailed information about the website structure,
-interactive features, and implementation is available in
-`docs/technical-documentation.md`.
+For implementation details, see the Technical Documentation (docs/technical-documentation.md).
